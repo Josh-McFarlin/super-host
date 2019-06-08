@@ -1,6 +1,6 @@
 import { spy } from 'sinon';
 
-import * as actions from '../../app/actions/counter';
+import * as actions from '../../frontend/actions/counter';
 
 
 describe('actions', () => {

@@ -29,8 +29,8 @@
     "package-win": "npm run build && electron-builder build --win --x64",
     "precommit": "lint-staged",
     "prestart": "npm run build",
-    "start": "cross-env NODE_ENV=production electron ./app/main.prod.js",
-    "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./electron/main.dev.js",
+    "start": "cross-env NODE_ENV=production electron ./frontend/main.prod.js",
+    "start-main-dev": "cross-env HOT=1 NODE_ENV=development electron -r @babel/register ./backend/electron/main.dev.js",
     "start-renderer-dev": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.config.renderer.dev.babel.js",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
     "test-all": "npm run lint && npm run build && npm run test && npm run build-e2e && npm run test-e2e",
@@ -44,15 +44,15 @@
       "git add"
     ]
   },
-  "main": "./app/main.prod.js",
+  "main": "frontend/main.prod.js",
   "build": {
     "productName": "Super Host",
     "appId": "me.joshmcfarlin.SuperHost",
     "files": [
-      "app/dist/",
-      "app/app.html",
-      "app/main.prod.js",
-      "app/main.prod.js.map",
+      "frontend/dist/",
+      "frontend/app.html",
+      "frontend/main.prod.js",
+      "frontend/main.prod.js.map",
       "package.json"
     ],
     "dmg": {
@@ -124,6 +124,7 @@
     "electron-log": "^2.2.17",
     "electron-updater": "^3.2.3",
     "history": "^4.7.2",
+    "lodash": "^4.17.11",
     "ngrok": "^3.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

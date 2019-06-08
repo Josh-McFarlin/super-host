@@ -6,7 +6,7 @@
  * through IPC.
  *
  * When running `npm run build` or `npm run build-main`, this file is compiled to
- * `./app/main.prod.js` using webpack. This gives us some performance wins.
+ * `./frontend/main.prod.js` using webpack. This gives us some performance wins.
  *
  */
 import { app, BrowserWindow } from 'electron';
@@ -61,7 +61,7 @@ async function createWindow() {
         height: 728
     });
 
-    mainWindow.loadURL(`file://${__dirname}/../app/app.html`);
+    mainWindow.loadURL(`file://${__dirname}/../../frontend/app.html`);
 
     // @TODO: Use 'ready-to-show' event
     //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
