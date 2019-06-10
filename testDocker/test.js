@@ -1,6 +1,6 @@
 const path = require('path');
 
-const DockerController = require('../backend/docker');
+const DockerController = require('../backend/docker/Controller');
 const Server = require('../backend/portForwarding/ngrok');
 
 /*

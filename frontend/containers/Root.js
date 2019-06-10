@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
-
-import Routes from '../Routes';
+import Routes from '../routes/Routes';
 
 
 export default class Root extends React.Component {

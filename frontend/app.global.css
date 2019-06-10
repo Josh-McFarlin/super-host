@@ -5,39 +5,67 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
 
 body {
-  position: relative;
-  color: white;
-  height: 100vh;
-  background-color: #232c39;
-  background-image: linear-gradient(45deg, rgba(0, 216, 255, 0.5) 10%, rgba(0, 1, 127, 0.7));
-  font-family: Arial, Helvetica, Helvetica Neue, serif;
-  overflow-y: hidden;
+    position: relative;
+    color: white;
+    height: 100vh;
+    background: #232c39 linear-gradient(
+        to top right,
+        hsl(187.03, 66.21%, 57.06%) 0%,
+        hsl(187.21, 65.89%, 56.92%) 8.1%,
+        hsl(187.71, 64.98%, 56.54%) 15.5%,
+        hsl(188.51, 63.6%, 55.94%) 22.5%,
+        hsl(189.59, 61.86%, 55.16%) 29%,
+        hsl(190.95, 59.86%, 54.22%) 35.3%,
+        hsl(192.58, 57.72%, 53.17%) 41.2%,
+        hsl(194.47, 55.52%, 52.03%) 47.1%,
+        hsl(196.59, 53.34%, 50.84%) 52.9%,
+        hsl(198.9, 51.98%, 49.65%) 58.8%,
+        hsl(201.34, 52.42%, 48.5%) 64.7%,
+        hsl(203.8, 52.85%, 47.43%) 71%,
+        hsl(206.13, 53.26%, 46.49%) 77.5%,
+        hsl(208.12, 53.6%, 45.76%) 84.5%,
+        hsl(209.49, 53.83%, 45.27%) 91.9%,
+        hsl(210, 53.91%, 45.1%) 100%
+    );
+    font-family: Arial, Helvetica, Helvetica Neue, serif;
+    overflow-y: hidden;
 }
 
 h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
+    margin: 0;
+    font-size: 2.25rem;
+    font-weight: bold;
+    letter-spacing: -0.025em;
+    color: #fff;
 }
 
 p {
-  font-size: 24px;
+    font-size: 24px;
 }
 
 li {
-  list-style: none;
+    list-style: none;
 }
 
 a {
-  color: white;
-  opacity: 0.75;
-  text-decoration: none;
+    color: white;
+    opacity: 0.75;
+    text-decoration: none;
 }
 
 a:hover {
-  opacity: 1;
-  text-decoration: none;
-  cursor: pointer;
+    opacity: 1;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
 }

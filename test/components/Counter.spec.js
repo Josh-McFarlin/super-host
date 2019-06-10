@@ -5,7 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { BrowserRouter as Router } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 
-import Counter from '../../frontend/components/Counter';
+import Counter from '../../frontend/pages/Counter';
 
 
 Enzyme.configure({ adapter: new Adapter() });
