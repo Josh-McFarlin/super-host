@@ -1,6 +1,6 @@
 import { spy } from 'sinon';
 
-import * as actions from '../../frontend/actions/counter';
+import * as actions from '../../frontend/redux/actions/counter';
 
 
 describe('actions', () => {

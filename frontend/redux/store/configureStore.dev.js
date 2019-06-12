@@ -3,8 +3,9 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
+import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux';
 
-import createRootReducer from '../reducers';
+import createRootReducer from '../reducers/index';
 import * as counterActions from '../actions/counter';
 
 
@@ -12,10 +13,15 @@ const history = createHashHistory();
 
 const rootReducer = createRootReducer(history);
 
-const configureStore = (initialState) => {
+const configureStore = () => {
     // Redux Configuration
     const middleware = [];
     const enhancers = [];
+
+    const initialState = getInitialStateRenderer();
+
+    // electron-redux Middleware
+    middleware.push(forwardToMain);
 
     // Thunk Middleware
     middleware.push(thunk);
@@ -55,15 +61,21 @@ const configureStore = (initialState) => {
     const enhancer = composeEnhancers(...enhancers);
 
     // Create Store
-    const store = createStore(rootReducer, initialState, enhancer);
+    const store = createStore(
+        rootReducer,
+        initialState,
+        enhancer
+    );
 
     if (module.hot) {
         module.hot.accept(
             '../reducers',
             // eslint-disable-next-line global-require
-            () => store.replaceReducer(require('../reducers').default)
+            () => store.replaceReducer(require('../reducers/index').default)
         );
     }
+
+    replayActionRenderer(store);
 
     return store;
 };

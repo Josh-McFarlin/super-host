@@ -14,6 +14,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 
 import MenuBuilder from './menu';
+import configureStore from '../redux/store/configureStore';
 
 
 export default class AppUpdater {
@@ -50,7 +51,19 @@ const installExtensions = async () => {
  * Add event listeners...
  */
 
+global.state = {};
+
 async function createWindow() {
+    const store = configureStore(global.state);
+
+    store.subscribe(async () => {
+        global.state = store.getState();
+        // persist store changes
+        // TODO: should this be blocking / wait? _.throttle?
+        console.log(global.state);
+        // await storage.set('state', global.state);
+    });
+
     if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
         await installExtensions();
     }
