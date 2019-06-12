@@ -12,9 +12,12 @@
 import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import pify from 'pify';
+import jsonStorage from 'electron-json-storage';
 
 import MenuBuilder from './menu';
 import configureStore from '../redux/store/configureStore';
+import { getStorageLocation } from '../utils/storage';
 
 
 export default class AppUpdater {
@@ -52,16 +55,22 @@ const installExtensions = async () => {
  */
 
 global.state = {};
+const storage = pify(jsonStorage);
+
+// console.log(getStorageLocation('test'));
 
 async function createWindow() {
+    const storagePath = getStorageLocation('redux');
+    storage.setDataPath(storagePath);
+
+    global.state = await storage.get('state');
     const store = configureStore(global.state);
 
     store.subscribe(async () => {
         global.state = store.getState();
         // persist store changes
-        // TODO: should this be blocking / wait? _.throttle?
-        console.log(global.state);
-        // await storage.set('state', global.state);
+        console.log('updated state')
+        await storage.set('state', global.state);
     });
 
     if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {

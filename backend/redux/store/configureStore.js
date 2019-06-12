@@ -5,10 +5,15 @@ const { forwardToRenderer, triggerAlias, replayActionMain } = require('electron-
 const createRootReducer = require('../reducers/index');
 
 
-const rootReducer = createRootReducer();
-const enhancer = applyMiddleware(triggerAlias, thunk, forwardToRenderer);
+const isDev = process.env.NODE_ENV !== 'production';
 
 function configureStore(initialState) {
+    const logger = require('redux-logger').createLogger();
+    const rootReducer = createRootReducer();
+    const enhancer = isDev ?
+        applyMiddleware(triggerAlias, thunk, logger, forwardToRenderer) :
+        applyMiddleware(triggerAlias, thunk, forwardToRenderer);
+
     const store = createStore(
         rootReducer,
         initialState,

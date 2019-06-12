@@ -5,8 +5,10 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
 
 import Modal from './Modal';
+import { increment } from '../../redux/actions/counter';
 
 
 const useStyles = makeStyles({
@@ -24,12 +26,13 @@ const useStyles = makeStyles({
     }
 });
 
-export default () => {
+const Project = ({ increase }) => {
     const classes = useStyles();
     const [modalOpen, setModalOpen] = React.useState(false);
 
     const toggleModal = () => {
         setModalOpen(!modalOpen);
+        increase();
     };
 
     return (
@@ -69,3 +72,13 @@ export default () => {
         </Card>
     );
 };
+
+const mapStateToProps = (state) => ({
+    data: state.data
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    increase: () => dispatch(increment())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Project);
