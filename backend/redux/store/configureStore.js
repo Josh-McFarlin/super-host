@@ -1,18 +1,22 @@
-const { createStore, applyMiddleware } = require('redux');
-const thunk = require('redux-thunk').default;
-const { forwardToRenderer, triggerAlias, replayActionMain } = require('electron-redux');
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { forwardToRenderer, triggerAlias, replayActionMain } from 'electron-redux';
+import createSagaMiddleware from 'redux-saga';
 
-const createRootReducer = require('../reducers/index');
+import createRootReducer from '../reducers';
+import sagas from '../sagas';
 
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-function configureStore(initialState) {
+export default function configureStore(initialState) {
     const logger = require('redux-logger').createLogger();
+    const sagaMiddleware = createSagaMiddleware();
+
     const rootReducer = createRootReducer();
     const enhancer = isDev ?
-        applyMiddleware(triggerAlias, thunk, logger, forwardToRenderer) :
-        applyMiddleware(triggerAlias, thunk, forwardToRenderer);
+        applyMiddleware(triggerAlias, thunk, sagaMiddleware, logger, forwardToRenderer) :
+        applyMiddleware(triggerAlias, thunk, sagaMiddleware, forwardToRenderer);
 
     const store = createStore(
         rootReducer,
@@ -21,8 +25,7 @@ function configureStore(initialState) {
     );
 
     replayActionMain(store);
+    sagaMiddleware.run(sagas);
 
     return store;
 }
-
-module.exports = configureStore;

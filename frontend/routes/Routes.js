@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router';
 
 import App from '../containers/App';
-import definitions from './Definitions';
+import definitions from './definitions';
 
 
 export default () => (

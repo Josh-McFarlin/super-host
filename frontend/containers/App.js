@@ -16,7 +16,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { Link, withRouter } from 'react-router-dom';
 import 'typeface-roboto/index.css';
 
-import routes from '../routes/Definitions';
+import routes from '../routes/definitions';
 
 
 const drawerWidth = 240;

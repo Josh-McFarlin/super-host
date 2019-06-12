@@ -1,14 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { connect } from 'react-redux';
 
 import Modal from './Modal';
-import { increment } from '../../redux/actions/counter';
 
 
 const useStyles = makeStyles({
@@ -26,13 +23,14 @@ const useStyles = makeStyles({
     }
 });
 
-const Project = ({ increase }) => {
+const Project = (props) => {
+    const { projectName, status } = props;
+
     const classes = useStyles();
     const [modalOpen, setModalOpen] = React.useState(false);
 
     const toggleModal = () => {
         setModalOpen(!modalOpen);
-        increase();
     };
 
     return (
@@ -45,40 +43,27 @@ const Project = ({ increase }) => {
                     className={classes.title}
                     variant='h5'
                 >
-                    Title
+                    {projectName}
                 </Typography>
                 <Typography
                     className={classes.pos}
                     variant='subtitle1'
                 >
-                    Status
-                </Typography>
-                <Typography
-                    color='textSecondary'
-                    variant='subtitle1'
-                >
-                    Project Type
+                    {status}
                 </Typography>
             </CardContent>
-            <CardActions>
-                <Button size='small' onClick={toggleModal}>
-                    Learn More
-                </Button>
-            </CardActions>
             <Modal
                 open={modalOpen}
                 onClose={toggleModal}
+                {...props}
             />
         </Card>
     );
 };
 
-const mapStateToProps = (state) => ({
-    data: state.data
-});
+Project.propTypes = {
+    projectName: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired
+};
 
-const mapDispatchToProps = (dispatch) => ({
-    increase: () => dispatch(increment())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Project);
+export default Project;

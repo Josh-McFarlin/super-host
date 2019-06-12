@@ -3,14 +3,13 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
-import { forwardToMain, replayActionRenderer, getInitialStateRenderer } from 'electron-redux';
+import { forwardToMainWithParams, replayActionRenderer, getInitialStateRenderer } from 'electron-redux';
 
 import createRootReducer from '../reducers/index';
-import * as counterActions from '../actions/counter';
+import * as projectsActions from '../actions/projects';
 
 
 const history = createHashHistory();
-
 const rootReducer = createRootReducer(history);
 
 const configureStore = () => {
@@ -21,7 +20,7 @@ const configureStore = () => {
     const initialState = getInitialStateRenderer();
 
     // electron-redux Middleware
-    middleware.push(forwardToMain);
+    middleware.push(forwardToMainWithParams());
 
     // Thunk Middleware
     middleware.push(thunk);
@@ -37,13 +36,16 @@ const configureStore = () => {
         middleware.push(logger);
     }
 
+    // Set initial location
+    history.replace(initialState.router.location);
+
     // Router Middleware
     const router = routerMiddleware(history);
     middleware.push(router);
 
     // Redux DevTools Configuration
     const actionCreators = {
-        ...counterActions,
+        ...projectsActions,
         ...routerActions
     };
     // If Redux DevTools Extension is installed use it, otherwise use Redux compose

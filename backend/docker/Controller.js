@@ -4,7 +4,7 @@ const _ = require('lodash');
 const Container = require('./Container');
 
 
-class DockerController {
+export default class DockerController {
     constructor(workingDirectory) {
         const options = new cli.Options(
             null,
@@ -49,5 +49,3 @@ class DockerController {
         return this.containers[projectName];
     }
 }
-
-module.exports = DockerController;

@@ -9,6 +9,11 @@ import VCSIcon from '@material-ui/icons/CloudDownload';
 import CreateIcon from '@material-ui/icons/Create';
 import clsx from 'clsx';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
+import { createProject } from '../../redux/actions/projects';
+import routes from '../../routes/definitions';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +33,10 @@ const useStyles = makeStyles((theme) => ({
     projectInfo: {
         width: '100%',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        [theme.breakpoints.down('md')]: {
+            flexDirection: 'row'
+        }
     },
     vcsSelector: {
         display: 'flex',
@@ -66,8 +74,13 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         fontSize: 50
     },
-    iconMargin: {
+    condMargin: {
         margin: theme.spacing(2)
+    },
+    sizeMargin: {
+        [theme.breakpoints.down('md')]: {
+            margin: theme.spacing(2)
+        }
     },
     hidden: {
         display: 'none'
@@ -97,18 +110,19 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default () => {
+const CreatePage = ({ createProject, history }) => {
     const classes = useStyles();
     const [projectName, setProjectName] = React.useState('');
     const [directory, setDirectory] = React.useState(null);
     const [vcsUrl, setVcsUrl] = React.useState('');
     const [dragLevel, setDragLevel] = React.useState(0);
+    const [remotePort, setRemotePort] = React.useState(3000);
     const folderInputRef = React.createRef();
 
     const setName = (e) => {
         const newName = e.target.value
-            .replace(' ', '-')
             .toLowerCase()
+            .replace(' ', '-')
             .replace(/[^a-z0-9-]/g, '');
 
         setProjectName(newName);
@@ -117,6 +131,17 @@ export default () => {
     const setUrl = (e) => {
         setVcsUrl(e.target.value);
         setDirectory('');
+    };
+
+    const setPort = (e) => {
+        const val = e.target.value;
+
+        if (_.isNumber(val)) {
+            setRemotePort(val);
+        } else {
+            const int = parseInt(val, 10);
+            setRemotePort(int);
+        }
     };
 
     const handleDrag = (e) => {
@@ -168,11 +193,31 @@ export default () => {
         }
     };
 
+    const handleSelect = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (e.target.files && e.target.files.length > 0) {
+            const newDir = e.target.files[e.target.files.length - 1];
+
+            setDirectory(newDir.path);
+            setVcsUrl('');
+        }
+    };
+
     const openFolderSelect = () => {
         folderInputRef.current.click();
     };
 
+    const submit = () => {
+        const source = _.isEmpty(vcsUrl) ? directory : vcsUrl;
+
+        createProject(projectName, remotePort, source);
+        history.push(routes.projects.path);
+    };
+
     const creatable = (_.isString(projectName) && !_.isEmpty(projectName))
+        && (_.isNumber(remotePort) && remotePort > 0)
         && ((_.isString(directory) && !_.isEmpty(directory))
         || (_.isString(vcsUrl) && !_.isEmpty(vcsUrl)));
 
@@ -180,6 +225,7 @@ export default () => {
         <div className={classes.root}>
             <Paper className={clsx(classes.paper, classes.projectInfo)}>
                 <TextField
+                    className={classes.sizeMargin}
                     fullWidth
                     label='Project Name'
                     value={projectName}
@@ -188,10 +234,25 @@ export default () => {
                     variant='outlined'
                     type='text'
                 />
+                <TextField
+                    fullWidth
+                    label='Server Port'
+                    placeholder='The port used on the server, not the local machine.'
+                    value={remotePort}
+                    onChange={setPort}
+                    margin='normal'
+                    variant='outlined'
+                    type='text'
+                />
             </Paper>
             <Paper className={clsx(classes.paper, classes.inputSelector)}>
                 <div className={classes.vcsSelector}>
-                    <VCSIcon className={classes.icon} />
+                    <VCSIcon
+                        className={clsx(
+                            classes.icon,
+                            classes.condMargin
+                        )}
+                    />
                     <div className={classes.vcsInput}>
                         <TextField
                             fullWidth
@@ -235,7 +296,7 @@ export default () => {
                     <SelectIcon
                         className={clsx(
                             classes.icon,
-                            classes.iconMargin
+                            classes.condMargin
                         )}
                     />
                     <Typography variant='h6'>
@@ -251,6 +312,7 @@ export default () => {
                         ref={folderInputRef}
                         type='file'
                         webkitdirectory='true'
+                        onChange={handleSelect}
                     />
                 </div>
             </Paper>
@@ -259,9 +321,17 @@ export default () => {
                 aria-label='Add'
                 className={classes.icon}
                 disabled={!creatable}
+                onClick={submit}
             >
                 <CreateIcon />
             </Fab>
         </div>
     );
 };
+
+export default connect(
+    null,
+    {
+        createProject
+    }
+)(withRouter(CreatePage));

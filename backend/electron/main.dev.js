@@ -69,7 +69,6 @@ async function createWindow() {
     store.subscribe(async () => {
         global.state = store.getState();
         // persist store changes
-        console.log('updated state')
         await storage.set('state', global.state);
     });
 

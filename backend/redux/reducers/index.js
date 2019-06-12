@@ -1,10 +1,12 @@
-const { combineReducers } = require('redux');
+import { combineReducers } from 'redux';
 
-const counter = require('./counter');
+import projects from '../../../shared/redux/reducers/projects';
+import router from './router';
 
 
-module.exports = function createRootReducer() {
-    return combineReducers({
-        counter
-    });
-};
+const createRootReducer = () => combineReducers({
+    projects,
+    router
+});
+
+export default createRootReducer;

@@ -23,13 +23,14 @@ const useStyles = makeStyles({
     }
 });
 
-const Modal = ({ open, onClose }) => {
+const Modal = ({ open, onClose, projectName, localPort, remotePort, source, status }) => {
     const classes = useStyles();
 
     return (
         <Dialog
             open={open}
             onClose={onClose}
+            maxWidth='lg'
         >
             <DialogTitle>
                 Project Info
@@ -61,7 +62,12 @@ const Modal = ({ open, onClose }) => {
 
 Modal.propTypes = {
     open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    projectName: PropTypes.string.isRequired,
+    localPort: PropTypes.number.isRequired,
+    remotePort: PropTypes.number.isRequired,
+    source: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired
 };
 
 export default Modal;

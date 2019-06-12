@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 
-class Container {
+export default class Project {
     constructor(docker, projectName, localPort) {
         if (_.isNil(docker)) {
             throw new Error('A docker instance is required!');
@@ -55,5 +55,3 @@ class Container {
             .then((data) => data.object);
     }
 }
-
-module.exports = Container;

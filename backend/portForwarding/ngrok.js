@@ -1,7 +1,7 @@
-const ngrok = require('ngrok');
+import ngrok from 'ngrok';
 
 
-class Tunnel {
+export default class Tunnel {
     constructor(localPort) {
         if (localPort == null) {
             throw new Error('A port number is required!');
@@ -49,5 +49,3 @@ class Tunnel {
         return this.isConnected;
     }
 }
-
-module.exports = Tunnel;
