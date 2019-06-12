@@ -10,6 +10,7 @@ export default () => (
         <Switch>
             {Object.values(definitions).map((route) => (
                 <Route
+                    key={route.path}
                     exact
                     path={route.path}
                     component={route.component}

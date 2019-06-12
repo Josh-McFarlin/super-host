@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography/Typography';
 
-import ProxyContainer from '../../components/ProxyContainer';
+import Proxy from '../../components/Proxy';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,13 +25,13 @@ export default () => {
         <div className={classes.root}>
             <Grid container spacing={2}>
                 <Grid item xs={4}>
-                    <ProxyContainer />
+                    <Proxy />
                 </Grid>
                 <Grid item xs={4}>
-                    <ProxyContainer />
+                    <Proxy />
                 </Grid>
                 <Grid item xs={4}>
-                    <ProxyContainer />
+                    <Proxy />
                 </Grid>
             </Grid>
         </div>

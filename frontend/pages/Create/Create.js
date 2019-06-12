@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography/Typography';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
 import SelectIcon from '@material-ui/icons/FolderOpen';
 import VCSIcon from '@material-ui/icons/CloudDownload';
 import CreateIcon from '@material-ui/icons/Create';
@@ -31,9 +30,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column'
     },
+    vcsSelector: {
+        display: 'flex',
+        alignItems: 'center'
+    },
     fileDrop: {
-        width: '100%',
-        height: '40%',
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -57,14 +59,41 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         height: '60%',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'stretch'
     },
     icon: {
         fontSize: 50
     },
+    iconMargin: {
+        margin: theme.spacing(2)
+    },
     hidden: {
         display: 'none'
+    },
+    orSeparator: {
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        '&:before': {
+            content: '""',
+            borderTop: '2px solid',
+            margin: '0 20px 0 0',
+            flex: '1 0 20px'
+        },
+        '&:after': {
+            content: '""',
+            borderTop: '2px solid',
+            margin: '0 0 0 20px',
+            flex: '1 0 20px'
+        }
+    },
+    vcsInput: {
+        flex: 1,
+        marginRight: theme.spacing(2)
     }
 }));
 
@@ -161,14 +190,9 @@ export default () => {
                 />
             </Paper>
             <Paper className={clsx(classes.paper, classes.inputSelector)}>
-                <Grid
-                    container
-                    direction='column'
-                    spacing={1}
-                    alignItems='center'
-                >
-                    <Grid item xs={12}>
-                        <VCSIcon className={classes.icon} />
+                <div className={classes.vcsSelector}>
+                    <VCSIcon className={classes.icon} />
+                    <div className={classes.vcsInput}>
                         <TextField
                             fullWidth
                             label='VCS Url'
@@ -177,42 +201,58 @@ export default () => {
                             margin='normal'
                             variant='outlined'
                             type='url'
+                            placeholder='https://github.com/Josh-McFarlin/super-host.git'
                         />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <div
-                            className={clsx(
-                                classes.paper,
-                                classes.fileDrop,
-                                {
-                                    [classes.badDrag]: dragLevel === -1,
-                                    [classes.noDrag]: dragLevel === 0,
-                                    [classes.goodDrag]: dragLevel === 1
-                                }
-                            )}
-                            onClick={openFolderSelect}
-                            onDrag={handleDrag}
-                            onDragOver={handleDrag}
-                            onDrop={handleDrop}
+                        <Typography
+                            variant='subtitle2'
+                            align='left'
                         >
-                            <SelectIcon className={classes.icon} />
-                            <Typography variant='h6'>
-                                Choose a directory or drag it here.
-                            </Typography>
-                            {(_.isString(directory) && !_.isEmpty(directory)) && (
-                                <Typography variant='h6'>
-                                    ({directory})
-                                </Typography>
-                            )}
-                            <input
-                                className={classes.hidden}
-                                ref={folderInputRef}
-                                type='file'
-                                webkitdirectory='true'
-                            />
-                        </div>
-                    </Grid>
-                </Grid>
+                            GitHub, GitLab, BitBucket, etc
+                        </Typography>
+                    </div>
+                </div>
+                <Typography
+                    className={classes.orSeparator}
+                    variant='h6'
+                >
+                    OR
+                </Typography>
+                <div
+                    className={clsx(
+                        classes.paper,
+                        classes.fileDrop,
+                        {
+                            [classes.badDrag]: dragLevel === -1,
+                            [classes.noDrag]: dragLevel === 0,
+                            [classes.goodDrag]: dragLevel === 1
+                        }
+                    )}
+                    onClick={openFolderSelect}
+                    onDrag={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                >
+                    <SelectIcon
+                        className={clsx(
+                            classes.icon,
+                            classes.iconMargin
+                        )}
+                    />
+                    <Typography variant='h6'>
+                        Choose a directory or drag it here.
+                    </Typography>
+                    {(_.isString(directory) && !_.isEmpty(directory)) && (
+                        <Typography variant='h6'>
+                            ({directory})
+                        </Typography>
+                    )}
+                    <input
+                        className={classes.hidden}
+                        ref={folderInputRef}
+                        type='file'
+                        webkitdirectory='true'
+                    />
+                </div>
             </Paper>
             <Fab
                 color='primary'

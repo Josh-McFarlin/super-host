@@ -6,10 +6,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+import Modal from './Modal';
+
 
 const useStyles = makeStyles({
     card: {
-        // minWidth: 275
+        cursor: 'pointer',
+        '&:hover': {
+            backgroundColor: '#eee'
+        }
     },
     title: {
         // fontSize: 14
@@ -21,9 +26,17 @@ const useStyles = makeStyles({
 
 export default () => {
     const classes = useStyles();
+    const [modalOpen, setModalOpen] = React.useState(false);
+
+    const toggleModal = () => {
+        setModalOpen(!modalOpen);
+    };
 
     return (
-        <Card className={classes.card}>
+        <Card
+            className={classes.card}
+            onClick={toggleModal}
+        >
             <CardContent>
                 <Typography
                     className={classes.title}
@@ -41,14 +54,18 @@ export default () => {
                     color='textSecondary'
                     variant='subtitle1'
                 >
-                    Service Type
+                    Project Type
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size='small'>
+                <Button size='small' onClick={toggleModal}>
                     Learn More
                 </Button>
             </CardActions>
+            <Modal
+                open={modalOpen}
+                onClose={toggleModal}
+            />
         </Card>
     );
 };

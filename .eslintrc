@@ -1,10 +1,13 @@
 {
   "parser": "babel-eslint",
   "parserOptions": {
-    "sourceType": "module",
-    "allowImportExportEverywhere": true
+    "ecmaVersion": 9,
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module"
   },
-  "extends": ["airbnb"],
+  "extends": "airbnb",
   "env": {
     "browser": true,
     "node": true,

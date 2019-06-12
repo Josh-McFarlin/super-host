@@ -52,13 +52,13 @@ const useStyles = makeStyles((theme) => createStyles({
     drawerOpen: {
         width: drawerWidth,
         transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
+            easing: theme.transitions.easing.easeInOut,
             duration: theme.transitions.duration.enteringScreen
         })
     },
     drawerClose: {
         transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
+            easing: theme.transitions.easing.easeInOut,
             duration: theme.transitions.duration.leavingScreen
         }),
         overflowX: 'hidden',
@@ -147,20 +147,23 @@ const App = ({ children, location }) => {
                     open={open}
                 >
                     <List>
-                        {Object.values(routes).map((route) => (
-                            <ListItem
-                                key={route.title}
-                                component={Link}
-                                to={route.path}
-                                selected={location.pathname === route.path}
-                                button
-                            >
-                                <ListItemIcon>
-                                    {React.createElement(route.icon)}
-                                </ListItemIcon>
-                                <ListItemText primary={route.title} />
-                            </ListItem>
-                        ))}
+                        {Object.values(routes)
+                            .filter((route) => route.sidebar)
+                            .map((route) => (
+                                <ListItem
+                                    key={route.title}
+                                    component={Link}
+                                    to={route.path}
+                                    selected={location.pathname === route.path}
+                                    button
+                                >
+                                    <ListItemIcon>
+                                        {React.createElement(route.icon)}
+                                    </ListItemIcon>
+                                    <ListItemText primary={route.title} />
+                                </ListItem>
+                            ))
+                        }
                     </List>
                 </Drawer>
                 <div className={classes.content}>

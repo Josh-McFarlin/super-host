@@ -1,16 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography/Typography';
 
-import routes from '../../routes/Definitions';
 
-
-export default class SettingsPage extends React.PureComponent {
-    render() {
-        return (
-            <div>
-                <h2>Settings</h2>
-                <Link to={routes.dashboard.path}>to Dashboard</Link>
-            </div>
-        );
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1
+    },
+    paper: {
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary
     }
-}
+}));
+
+export default () => {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.root}>
+            <Paper>
+                <Typography variant='h5'>
+                    Settings here
+                </Typography>
+            </Paper>
+        </div>
+    );
+};

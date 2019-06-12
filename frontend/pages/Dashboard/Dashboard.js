@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography/Typography';
 import { Line } from 'react-chartjs-2';
 
-import DockerContainer from '../../components/DockerContainer';
+import Project from '../../components/Project';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -95,13 +95,13 @@ export default () => {
                     </Paper>
                 </Grid>
                 <Grid item xs={4}>
-                    <DockerContainer />
+                    <Project />
                 </Grid>
                 <Grid item xs={4}>
-                    <DockerContainer />
+                    <Project />
                 </Grid>
                 <Grid item xs={4}>
-                    <DockerContainer />
+                    <Project />
                 </Grid>
             </Grid>
         </div>

@@ -29,7 +29,7 @@ export default () => {
                     className={classes.title}
                     variant='h5'
                 >
-                    Title
+                    Service Name
                 </Typography>
                 <Typography
                     className={classes.pos}
