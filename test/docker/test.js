@@ -62,6 +62,5 @@ describe('docker', () => {
         await deleteContainer(projectName);
 
         await ngrokServer.disconnect();
-
     });
 });
