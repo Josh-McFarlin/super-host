@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import clsx from 'clsx';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
@@ -172,6 +173,11 @@ const App = ({ children, location }) => {
             </div>
         </React.Fragment>
     );
+};
+
+App.propTypes = {
+    children: PropTypes.node.isRequired,
+    location: PropTypes.object.isRequired
 };
 
 export default withRouter(App);

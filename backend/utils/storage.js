@@ -1,8 +1,17 @@
-import { app } from 'electron';
+import { remote } from 'electron';
+import ncp from 'ncp';
 
+
+const { app } = remote;
 
 export const getStorageLocation = (location) =>
     `${app.getPath('appData')}/superHost/${location}`;
 
-export const getProjectLocation = (project) =>
-    `${app.getPath('appData')}/superHost/projects/${project}`;
+export const getProjectLocation = (projectName) =>
+    `${app.getPath('appData')}/superHost/projects/${projectName}`;
+
+export const copyDirectory = (source, projectName, cb) => {
+    const destination = getProjectLocation(projectName);
+
+    return ncp(source, destination, cb);
+};

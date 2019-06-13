@@ -19,17 +19,17 @@ export function buildImage(projectName) {
 }
 
 // Create and execute a new container
-export function run(projectName, localPort, remotePort) {
+export function runContainer(projectName, localPort, remotePort) {
     return docker.command(`run --name ${projectName} -d -p ${localPort}:${remotePort} ${projectName}-img`);
 }
 
 // Start a stopped container
-export function start(projectName) {
+export function startContainer(projectName) {
     return docker.command(`start ${projectName}`);
 }
 
 // Stop a running container
-export function stop(projectName) {
+export function stopContainer(projectName) {
     return docker.command(`stop ${projectName}`);
 }
 

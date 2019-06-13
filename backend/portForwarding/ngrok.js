@@ -34,10 +34,10 @@ export default class Tunnel {
     disconnect() {
         return ngrok.disconnect(this.url)
             .then(async () => {
-                await ngrok.kill();
-
                 this.url = null;
                 this.isConnected = false;
+
+                return ngrok.kill();
             });
     }
 

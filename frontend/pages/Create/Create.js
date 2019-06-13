@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography/Typography';
@@ -12,7 +13,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { createProject } from '../../redux/actions/projects';
+import * as actions from '../../redux/actions/projects';
 import routes from '../../routes/definitions';
 
 
@@ -329,9 +330,14 @@ const CreatePage = ({ createProject, history }) => {
     );
 };
 
+CreatePage.propTypes = {
+    createProject: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired
+};
+
 export default connect(
     null,
     {
-        createProject
+        createProject: actions.createProject
     }
 )(withRouter(CreatePage));
