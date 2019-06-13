@@ -3,7 +3,7 @@ import path from 'path';
 import {
     buildImage, runContainer, getRunning, deleteContainer, getStats
 } from '../../backend/docker/api';
-import Server from '../../backend/portForwarding/ngrok';
+import Ngrok from '../../backend/portForwarding/ngrok';
 import { copyDirectory } from '../../backend/utils/storage';
 
 /*
@@ -13,80 +13,55 @@ const projectName = 'test-project';
 const localPort = 13000;
 const remotePort = 3000;
 
-function sleep(time) {
-    return new Promise((resolve) => setTimeout(resolve, time));
-}
+describe('docker', () => {
+    it('should work only with Docker', async () => {
+        const testDirectory = path.join(__dirname, 'example');
+        await copyDirectory(testDirectory, projectName);
 
-async function testDocker() {
-    const testDirectory = path.join(__dirname, 'example');
-    copyDirectory(testDirectory, projectName);
+        const buildInfo = await buildImage(projectName);
+        expect(buildInfo).not.toBeNull();
 
-    const buildInfo = await buildImage(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully built image!');
-    console.log(buildInfo);
+        await runContainer(projectName, localPort, remotePort);
 
-    await runContainer(projectName, localPort, remotePort);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully ran image!');
+        const isRunning = await getRunning(projectName);
+        expect(isRunning).toBeTruthy();
 
-    const isRunning = await getRunning(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log(`Server is running: ${isRunning}`);
+        await deleteContainer(projectName);
+    });
 
-    await deleteContainer(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully deleted container!');
-}
+    it('should work only with Proxy', async () => {
+        const ngrokServer = new Ngrok(localPort);
 
-async function testServer() {
-    const ngrokServer = new Server(localPort);
+        const url = await ngrokServer.connect();
+        expect(url).not.toBeNull();
+        expect(url.length).toBeGreaterThan(0);
 
-    const url = await ngrokServer.connect();
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log(`Successfully created tunnel to: ${url}`);
+        await ngrokServer.disconnect();
+    });
 
-    await sleep(10000);
+    it('should work with Docker and Proxy', async () => {
+        const testDirectory = path.join(__dirname, 'example');
+        await copyDirectory(testDirectory, projectName);
 
-    await ngrokServer.disconnect();
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully disconnected from tunnel!');
-}
+        const buildInfo = await buildImage(projectName);
+        expect(buildInfo).not.toBeNull();
 
-async function testAll() {
-    const buildInfo = await buildImage(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully built image!');
-    console.log(buildInfo);
+        await runContainer(projectName, localPort, remotePort);
 
-    await runContainer(projectName, localPort, remotePort);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully ran image!');
+        const ngrokServer = new Ngrok(localPort);
+        const url = await ngrokServer.connect();
+        expect(url).not.toBeNull();
+        expect(url.length).toBeGreaterThan(0);
 
-    const ngrokServer = new Server(localPort);
-    const url = await ngrokServer.connect();
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log(`Successfully created tunnel to: ${url}`);
+        const isRunning = await getRunning(projectName);
+        expect(isRunning).toBeTruthy();
 
-    await sleep(10000);
+        const statsInfo = await getStats(projectName);
+        expect(statsInfo).not.toBeNull();
 
-    const isRunning = await getRunning(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log(`Server is running: ${isRunning}`);
+        await deleteContainer(projectName);
 
-    const statsInfo = await getStats(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log(statsInfo);
+        await ngrokServer.disconnect();
 
-    await deleteContainer(projectName);
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully deleted container!');
-
-    await ngrokServer.disconnect();
-    console.log('~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('Successfully disconnected from tunnel!');
-}
-
-testDocker();
-testServer();
-testAll();
+    });
+});

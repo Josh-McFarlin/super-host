@@ -1,15 +1,16 @@
-import cli from 'docker-cli-js';
-import { getStorageLocation } from '../utils/storage';
+import { Docker, Options } from 'docker-cli-js';
+
+import { getStorageLocation, deleteDirectory } from '../utils/storage';
 
 
 const workingDirectory = getStorageLocation('projects');
 
-const options = new cli.Options(
+const options = new Options(
     null,
     workingDirectory
 );
 
-const docker = new cli.Docker(options);
+const docker = new Docker(options);
 
 // Create a new container
 export function buildImage(projectName) {
@@ -35,7 +36,8 @@ export function stopContainer(projectName) {
 
 // Delete an existing project
 export function deleteContainer(projectName) {
-    return docker.command(`rm --force ${projectName}`);
+    return docker.command(`rm --force ${projectName}`)
+        .then(() => deleteDirectory(projectName));
 }
 
 // Get resource stats of container
