@@ -1,6 +1,6 @@
 import { createAliasedAction } from 'electron-redux';
 
-import { CREATE_PROJECT, DELETE_PROJECT } from '../../../shared/redux/types/project';
+import { CREATE_PROJECT, DELETE_PROJECT } from '../../../shared/redux/types/projects';
 
 
 export const createProject = createAliasedAction(

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
-import projects from '../../../shared/redux/reducers/projects';
+import shared from '../../../shared/redux/reducers';
 
 
 export default function createRootReducer(history) {
     return combineReducers({
-        router: connectRouter(history),
-        projects
+        ...shared,
+        router: connectRouter(history)
     });
 }

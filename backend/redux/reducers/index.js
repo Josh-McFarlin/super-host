@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import projects from '../../../shared/redux/reducers/projects';
+import shared from '../../../shared/redux/reducers';
 import router from './router';
 
 
 const createRootReducer = () => combineReducers({
-    projects,
+    ...shared,
     router
 });
 

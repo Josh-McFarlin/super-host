@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { PROJECT_CREATED, PROJECT_DELETED } from '../types/project';
+import { PROJECT_CREATED, PROJECT_DELETED } from '../types/projects';
 
 
 const initialState = {

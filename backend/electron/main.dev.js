@@ -57,8 +57,6 @@ const installExtensions = async () => {
 global.state = {};
 const storage = pify(jsonStorage);
 
-// console.log(getStorageLocation('test'));
-
 async function createWindow() {
     const storagePath = getStorageLocation('redux');
     storage.setDataPath(storagePath);

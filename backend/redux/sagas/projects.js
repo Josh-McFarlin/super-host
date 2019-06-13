@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 
-import { PROJECT_CREATED, PROJECT_DELETED } from '../../../shared/redux/types/project';
+import { PROJECT_CREATED, PROJECT_DELETED } from '../../../shared/redux/types/projects';
 import { getPort } from '../../utils/serverHelpers';
 // eslint-disable-next-line no-unused-vars
 import actions from '../../../frontend/redux/actions/projects';
@@ -22,14 +22,7 @@ export function* createProject(action) {
             localPort,
             remotePort,
             source,
-            status: 'created',
-            usage: {
-                memory: {
-                    used: 0,
-                    total: 0
-                },
-                cpuPerc: 0
-            }
+            status: 'created'
         }
     });
 }

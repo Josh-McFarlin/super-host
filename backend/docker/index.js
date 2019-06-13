@@ -1,4 +1,4 @@
-import Controller from './Controller';
+import API from './api';
 
 
-export default Controller;
+export default API;

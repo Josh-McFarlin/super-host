@@ -1,7 +1,7 @@
 import { takeEvery } from 'redux-saga/effects';
 
 import { createProject, deleteProject } from './projects';
-import { CREATE_PROJECT, DELETE_PROJECT } from '../../../shared/redux/types/project';
+import { CREATE_PROJECT, DELETE_PROJECT } from '../../../shared/redux/types/projects';
 
 
 export default function* sagas() {
