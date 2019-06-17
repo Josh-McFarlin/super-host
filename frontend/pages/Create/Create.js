@@ -211,9 +211,10 @@ const CreatePage = ({ createProject, history }) => {
     };
 
     const submit = () => {
-        const source = _.isEmpty(vcsUrl) ? directory : vcsUrl;
+        const source = _.isNil(vcsUrl) || _.isEmpty(vcsUrl) ? directory : vcsUrl;
+        const sourceType = source === vcsUrl ? 'url' : 'directory';
 
-        createProject(projectName, remotePort, source);
+        createProject(projectName, remotePort, source, sourceType);
         history.push(routes.projects.path);
     };
 

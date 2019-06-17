@@ -3,21 +3,18 @@ import _ from 'lodash';
 import { PROJECT_CREATED, PROJECT_DELETED } from '../types/projects';
 
 
-const initialState = {
-    projects: [],
-    runningProjects: []
-};
+const initialState = [];
 
 export default function reducer(state = initialState, action) {
     const stateCopy = _.cloneDeep(state);
 
     switch (action.type) {
         case PROJECT_CREATED:
-            stateCopy.projects.push(action.payload);
+            stateCopy.push(action.payload);
 
             return stateCopy;
         case PROJECT_DELETED:
-            _.remove(stateCopy.projects, (project) => (
+            _.remove(stateCopy, (project) => (
                 project.projectName === action.payload.projectName
             ));
 

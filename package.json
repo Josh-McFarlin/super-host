@@ -145,6 +145,7 @@
     "redux": "^4.0.1",
     "redux-saga": "^1.0.3",
     "redux-thunk": "^2.3.0",
+    "simple-git": "^1.115.0",
     "source-map-support": "^0.5.9",
     "typeface-roboto": "^0.0.54"
   },
