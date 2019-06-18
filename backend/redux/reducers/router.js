@@ -13,11 +13,14 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
     switch (action.type) {
-        case LOCATION_CHANGE:
+        case LOCATION_CHANGE: {
             return action.payload;
-        case CALL_HISTORY_METHOD:
+        }
+        case CALL_HISTORY_METHOD: {
             return action.payload;
-        default:
+        }
+        default: {
             return state;
+        }
     }
 }

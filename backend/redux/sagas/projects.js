@@ -57,7 +57,8 @@ export function* runProject(action) {
     yield put({
         type: PROJECT_RAN,
         payload: {
-            projectName
+            projectName,
+            status: 'running'
         }
     });
 }
@@ -70,7 +71,8 @@ export function* startProject(action) {
     yield put({
         type: PROJECT_STARTED,
         payload: {
-            projectName
+            projectName,
+            status: 'running'
         }
     });
 }
@@ -83,7 +85,8 @@ export function* stopProject(action) {
     yield put({
         type: PROJECT_STOPPED,
         payload: {
-            projectName
+            projectName,
+            status: 'stopped'
         }
     });
 }
@@ -124,7 +127,7 @@ export function* getProjectRunning(action) {
         type: PROJECT_GOT_RUNNING,
         payload: {
             projectName,
-            isRunning
+            status: isRunning ? 'running' : 'stopped'
         }
     });
 }
