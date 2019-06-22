@@ -15,17 +15,21 @@ export const getProjectFileLocation = (projectName, fileName) =>
 
 export const downloadProject = (source, projectName) => {
     const projectsLocation = getStorageLocation('projects');
-    const git = simpleGit(projectsLocation);
 
-    return new Promise((resolve, reject) => {
-        git.clone(source, projectName, (error, data) => {
-            if (!_.isNil(error)) {
-                reject(error);
-            } else {
-                resolve(data);
-            }
+    return fs.ensureDir(projectsLocation)
+        .then(() => {
+            const git = simpleGit(projectsLocation);
+
+            return new Promise((resolve, reject) => {
+                git.clone(source, projectName, (error, data) => {
+                    if (!_.isNil(error)) {
+                        reject(error);
+                    } else {
+                        resolve(data);
+                    }
+                });
+            });
         });
-    });
 };
 
 export const createFile = (projectName, fileName, content) => {

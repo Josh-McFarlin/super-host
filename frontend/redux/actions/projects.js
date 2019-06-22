@@ -8,11 +8,12 @@ import {
 
 export const createProject = createAliasedAction(
     CREATE_PROJECT,
-    (projectName, remotePort, source, sourceType) => ({
+    (projectName, remotePort, projectType, source, sourceType) => ({
         type: CREATE_PROJECT,
         payload: {
             projectName,
             remotePort,
+            projectType,
             source,
             sourceType
         }
@@ -21,11 +22,10 @@ export const createProject = createAliasedAction(
 
 export const runProject = createAliasedAction(
     RUN_PROJECT,
-    (projectName, projectType) => ({
+    (projectName) => ({
         type: RUN_PROJECT,
         payload: {
-            projectName,
-            projectType
+            projectName
         }
     })
 );

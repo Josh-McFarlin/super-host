@@ -6,27 +6,24 @@ import {
 } from '../types/projects';
 
 
-const initialState = [];
+const initialState = {};
 
 export default function reducer(state = initialState, action) {
     const stateCopy = _.cloneDeep(state);
 
     switch (action.type) {
         case PROJECT_CREATED: {
-            stateCopy.push(action.payload);
+            const { projectName } = action.payload;
+
+            stateCopy[projectName] = action.payload;
 
             return stateCopy;
         }
         case PROJECT_RAN: {
             const { projectName, status } = action.payload;
 
-            const projectIndex = _.findIndex(
-                stateCopy,
-                (project) => project.projectName === projectName
-            );
-
-            stateCopy[projectIndex] = {
-                ...stateCopy[projectIndex],
+            stateCopy[projectName] = {
+                ...stateCopy[projectName],
                 status
             };
 
@@ -35,13 +32,8 @@ export default function reducer(state = initialState, action) {
         case PROJECT_STARTED: {
             const { projectName, status } = action.payload;
 
-            const projectIndex = _.findIndex(
-                stateCopy,
-                (project) => project.projectName === projectName
-            );
-
-            stateCopy[projectIndex] = {
-                ...stateCopy[projectIndex],
+            stateCopy[projectName] = {
+                ...stateCopy[projectName],
                 status
             };
 
@@ -50,13 +42,8 @@ export default function reducer(state = initialState, action) {
         case PROJECT_STOPPED: {
             const { projectName, status } = action.payload;
 
-            const projectIndex = _.findIndex(
-                stateCopy,
-                (project) => project.projectName === projectName
-            );
-
-            stateCopy[projectIndex] = {
-                ...stateCopy[projectIndex],
+            stateCopy[projectName] = {
+                ...stateCopy[projectName],
                 status
             };
 
@@ -65,25 +52,15 @@ export default function reducer(state = initialState, action) {
         case PROJECT_DELETED: {
             const { projectName } = action.payload;
 
-            const projectIndex = _.findIndex(
-                stateCopy,
-                (project) => project.projectName === projectName
-            );
-
-            stateCopy.splice(projectIndex, 1);
+            delete stateCopy[projectName];
 
             return stateCopy;
         }
         case PROJECT_GOT_STATS: {
             const { projectName, stats } = action.payload;
 
-            const projectIndex = _.findIndex(
-                stateCopy,
-                (project) => project.projectName === projectName
-            );
-
-            stateCopy[projectIndex] = {
-                ...stateCopy[projectIndex],
+            stateCopy[projectName] = {
+                ...stateCopy[projectName],
                 stats
             };
 
@@ -92,13 +69,8 @@ export default function reducer(state = initialState, action) {
         case PROJECT_GOT_RUNNING: {
             const { projectName, status } = action.payload;
 
-            const projectIndex = _.findIndex(
-                stateCopy,
-                (project) => project.projectName === projectName
-            );
-
-            stateCopy[projectIndex] = {
-                ...stateCopy[projectIndex],
+            stateCopy[projectName] = {
+                ...stateCopy[projectName],
                 status
             };
 

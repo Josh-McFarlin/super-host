@@ -11,6 +11,7 @@ import {
 } from '../../docker/api';
 import { copyDirectory, downloadProject, createFile } from '../../utils/storage';
 import projectInfo from '../../docker/projectInfo';
+// Do not remove the next import, it is required for the backend
 // eslint-disable-next-line no-unused-vars
 import actions from '../../../frontend/redux/actions/projects';
 
@@ -21,6 +22,7 @@ export function* createProject(action) {
     const {
         projectName,
         remotePort,
+        projectType,
         source,
         sourceType
     } = action.payload;
@@ -31,12 +33,20 @@ export function* createProject(action) {
         yield call(copyDirectory, source, projectName);
     }
 
+    if (projectType !== 'custom') {
+        yield call(createFile, projectName, 'Dockerfile', projectInfo[projectType].dockerfile);
+        yield call(createFile, projectName, '.dockerignore', projectInfo[projectType].dockerignore);
+    }
+
+    yield call(buildImage, projectName);
+
     yield put({
         type: PROJECT_CREATED,
         payload: {
             projectName,
             localPort,
             remotePort,
+            projectType,
             source,
             sourceType,
             status: 'created'
@@ -45,12 +55,7 @@ export function* createProject(action) {
 }
 
 export function* runProject(action) {
-    const { projectName, projectType } = action.payload;
-
-    yield call(createFile, projectName, 'Dockerfile', projectInfo[projectType].dockerfile);
-    yield call(createFile, projectName, '.dockerignore', projectInfo[projectType].dockerignore);
-
-    yield call(buildImage, projectName);
+    const { projectName } = action.payload;
 
     yield call(runContainer, projectName);
 

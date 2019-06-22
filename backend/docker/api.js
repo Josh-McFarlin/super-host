@@ -37,6 +37,7 @@ export function stopContainer(projectName) {
 // Delete an existing project
 export function deleteContainer(projectName) {
     return docker.command(`rm --force ${projectName}`)
+        .then(() => docker.command(`image rm --force ${projectName}`))
         .then(() => deleteDirectory(projectName));
 }
 

@@ -67,7 +67,7 @@ ProjectsPage.propTypes = {
 
 export default connect(
     (state) => ({
-        projects: state.projects
+        projects: Object.values(state.projects)
     }),
     null
 )(ProjectsPage);

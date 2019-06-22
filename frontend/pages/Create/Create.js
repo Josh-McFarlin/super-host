@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import _ from 'lodash';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography/Typography';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
+import MenuItem from '@material-ui/core/MenuItem';
 import SelectIcon from '@material-ui/icons/FolderOpen';
 import VCSIcon from '@material-ui/icons/CloudDownload';
 import CreateIcon from '@material-ui/icons/Create';
-import clsx from 'clsx';
-import _ from 'lodash';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import Select from '@material-ui/core/Select';
 
 import * as actions from '../../redux/actions/projects';
 import routes from '../../routes/definitions';
@@ -27,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'flex-end'
     },
     paper: {
+        width: '100%',
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary
@@ -118,6 +121,7 @@ const CreatePage = ({ createProject, history }) => {
     const [vcsUrl, setVcsUrl] = React.useState('');
     const [dragLevel, setDragLevel] = React.useState(0);
     const [remotePort, setRemotePort] = React.useState(3000);
+    const [projectType, setProjectType] = React.useState('node');
     const folderInputRef = React.createRef();
 
     const setName = (e) => {
@@ -132,6 +136,10 @@ const CreatePage = ({ createProject, history }) => {
     const setUrl = (e) => {
         setVcsUrl(e.target.value);
         setDirectory('');
+    };
+
+    const setType = (e) => {
+        setProjectType(e.target.value);
     };
 
     const setPort = (e) => {
@@ -194,7 +202,7 @@ const CreatePage = ({ createProject, history }) => {
         }
     };
 
-    const handleSelect = (e) => {
+    const handleFileSelect = (e) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -214,7 +222,7 @@ const CreatePage = ({ createProject, history }) => {
         const source = _.isNil(vcsUrl) || _.isEmpty(vcsUrl) ? directory : vcsUrl;
         const sourceType = source === vcsUrl ? 'url' : 'directory';
 
-        createProject(projectName, remotePort, source, sourceType);
+        createProject(projectName, remotePort, projectType, source, sourceType);
         history.push(routes.projects.path);
     };
 
@@ -225,27 +233,37 @@ const CreatePage = ({ createProject, history }) => {
 
     return (
         <div className={classes.root}>
-            <Paper className={clsx(classes.paper, classes.projectInfo)}>
-                <TextField
-                    className={classes.sizeMargin}
+            <Paper className={classes.paper}>
+                <div className={classes.projectInfo}>
+                    <TextField
+                        className={classes.sizeMargin}
+                        fullWidth
+                        label='Project Name'
+                        value={projectName}
+                        onChange={setName}
+                        margin='normal'
+                        variant='outlined'
+                        type='text'
+                    />
+                    <TextField
+                        fullWidth
+                        label='Server Port'
+                        placeholder='The port used on the server, not the local machine.'
+                        value={remotePort}
+                        onChange={setPort}
+                        margin='normal'
+                        variant='outlined'
+                        type='text'
+                    />
+                </div>
+                <Select
+                    value={projectType}
+                    onChange={setType}
                     fullWidth
-                    label='Project Name'
-                    value={projectName}
-                    onChange={setName}
-                    margin='normal'
-                    variant='outlined'
-                    type='text'
-                />
-                <TextField
-                    fullWidth
-                    label='Server Port'
-                    placeholder='The port used on the server, not the local machine.'
-                    value={remotePort}
-                    onChange={setPort}
-                    margin='normal'
-                    variant='outlined'
-                    type='text'
-                />
+                >
+                    <MenuItem value='node'>NodeJS</MenuItem>
+                    <MenuItem value='custom'>Custom Docker</MenuItem>
+                </Select>
             </Paper>
             <Paper className={clsx(classes.paper, classes.inputSelector)}>
                 <div className={classes.vcsSelector}>
@@ -314,7 +332,7 @@ const CreatePage = ({ createProject, history }) => {
                         ref={folderInputRef}
                         type='file'
                         webkitdirectory='true'
-                        onChange={handleSelect}
+                        onChange={handleFileSelect}
                     />
                 </div>
             </Paper>
